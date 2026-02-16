@@ -12,6 +12,7 @@ import com.hotel.book.entity.BookingStatus;
 import com.hotel.book.entity.Customer;
 import com.hotel.book.entity.Hotel;
 import com.hotel.book.entity.Room;
+import com.hotel.book.exception.BusinessException;
 import com.hotel.book.exception.ResourceNotFoundException;
 import com.hotel.book.repository.BookingRepository;
 import com.hotel.book.repository.CustomerRepository;
@@ -42,7 +43,7 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
 
         if (!Boolean.TRUE.equals(room.getAvailable())) {
-            throw new IllegalStateException("Room is not available");
+            throw new BusinessException("Room is not available");
         }
 
         Booking booking = new Booking();

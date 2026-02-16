@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hotel.book.dto.BookingRequestDTO;
 import com.hotel.book.dto.BookingResponseDTO;
 import com.hotel.book.entity.BookingStatus;
+import com.hotel.book.exception.BusinessException;
 import com.hotel.book.service.BookingService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,8 @@ public class BookingController {
             List<BookingResponseDTO> bookings = bookingService.getBookingsByStatus(bookingStatus);
             return ResponseEntity.ok(bookings);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            throw new BusinessException("Invalid booking status: " + status
+                    + ". Allowed values are CONFIRMED or CANCELLED.");
         }
     }
 }
