@@ -58,9 +58,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomResponseDTO getRoomById(Long id) {
-        Room room = roomRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+    public RoomResponseDTO getRoomByHotelAndRoom(Long hotelId, Long roomId) {
+
+        Room room = roomRepository
+                .findByIdAndHotelId(roomId, hotelId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Room not found for this hotel"));
+
         return mapToResponse(room);
     }
 

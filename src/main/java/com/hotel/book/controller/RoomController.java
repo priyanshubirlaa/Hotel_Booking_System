@@ -48,8 +48,13 @@ public class RoomController {
     }
 
     @GetMapping("/{roomId}")
-    public ResponseEntity<RoomResponseDTO> getRoom(@PathVariable Long roomId) {
-        return ResponseEntity.ok(roomService.getRoomById(roomId));
-    }
+public ResponseEntity<RoomResponseDTO> getRoom(
+        @PathVariable Long hotelId,
+        @PathVariable Long roomId) {
+
+    return ResponseEntity.ok(
+            roomService.getRoomByHotelAndRoom(hotelId, roomId));
+}
+
 }
 

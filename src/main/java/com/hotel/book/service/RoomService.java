@@ -11,6 +11,8 @@ public interface RoomService {
 
     Page<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId, Pageable pageable);
 
-    RoomResponseDTO getRoomById(Long id);
+    RoomResponseDTO getRoomByHotelAndRoom(Long hotelId, Long roomId);
+
+    
 }
 
