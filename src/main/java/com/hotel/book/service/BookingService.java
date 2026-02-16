@@ -1,6 +1,7 @@
 package com.hotel.book.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.hotel.book.dto.BookingRequestDTO;
 import com.hotel.book.dto.BookingResponseDTO;
@@ -14,6 +15,6 @@ public interface BookingService {
 
     BookingResponseDTO cancelBooking(Long id);
 
-    List<BookingResponseDTO> getBookingsByStatus(BookingStatus status);
+    Page<BookingResponseDTO> getBookingsByStatus(BookingStatus status, Pageable pageable);
 }
 

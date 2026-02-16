@@ -1,15 +1,15 @@
 package com.hotel.book.service;
 
-import java.util.List;
-
 import com.hotel.book.dto.RoomRequestDTO;
 import com.hotel.book.dto.RoomResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RoomService {
 
     RoomResponseDTO addRoomToHotel(Long hotelId, RoomRequestDTO request);
 
-    List<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId);
+    Page<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId, Pageable pageable);
 
     RoomResponseDTO getRoomById(Long id);
 }

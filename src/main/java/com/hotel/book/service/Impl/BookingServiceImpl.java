@@ -1,8 +1,7 @@
 package com.hotel.book.service.Impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hotel.book.dto.BookingRequestDTO;
@@ -83,11 +82,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingResponseDTO> getBookingsByStatus(BookingStatus status) {
-        List<Booking> bookings = bookingRepository.findByStatus(status);
-        return bookings.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public Page<BookingResponseDTO> getBookingsByStatus(BookingStatus status, Pageable pageable) {
+        Page<Booking> page = bookingRepository.findByStatus(status, pageable);
+        return page.map(this::mapToResponse);
     }
 
     private BookingResponseDTO mapToResponse(Booking booking) {

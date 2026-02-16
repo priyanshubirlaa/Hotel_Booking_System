@@ -1,8 +1,10 @@
 package com.hotel.book.service.Impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hotel.book.dto.RoomRequestDTO;
@@ -39,15 +41,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId) {
+    public Page<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId, Pageable pageable) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
 
-        return hotel.getRooms()
-                .stream()
-                .filter(Room::getAvailable)
+        List<Room> availableRooms = roomRepository.findByHotelAndAvailableIsTrue(hotel);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), availableRooms.size());
+
+        List<RoomResponseDTO> content = availableRooms.subList(start, end).stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PageImpl<>(content, pageable, availableRooms.size());
     }
 
     @Override
