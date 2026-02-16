@@ -1,5 +1,7 @@
 package com.hotel.book.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hotel.book.dto.BookingRequestDTO;
 import com.hotel.book.dto.BookingResponseDTO;
+import com.hotel.book.entity.BookingStatus;
 import com.hotel.book.service.BookingService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +41,17 @@ public class BookingController {
     @PutMapping("/{id}/cancel")
     public ResponseEntity<BookingResponseDTO> cancelBooking(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.cancelBooking(id));
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<BookingResponseDTO>> getBookingsByStatus(@PathVariable String status) {
+        try {
+            BookingStatus bookingStatus = BookingStatus.valueOf(status.toUpperCase());
+            List<BookingResponseDTO> bookings = bookingService.getBookingsByStatus(bookingStatus);
+            return ResponseEntity.ok(bookings);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
 

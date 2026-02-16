@@ -1,5 +1,8 @@
 package com.hotel.book.service.Impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.hotel.book.dto.BookingRequestDTO;
@@ -76,6 +79,14 @@ public class BookingServiceImpl implements BookingService {
 
         Booking saved = bookingRepository.save(booking);
         return mapToResponse(saved);
+    }
+
+    @Override
+    public List<BookingResponseDTO> getBookingsByStatus(BookingStatus status) {
+        List<Booking> bookings = bookingRepository.findByStatus(status);
+        return bookings.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
     private BookingResponseDTO mapToResponse(Booking booking) {
