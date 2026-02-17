@@ -1,78 +1,78 @@
-🏨 Hotel Booking System – Backend (Spring Boot)
+```markdown
+# 🏨 Hotel Booking System – Backend (Spring Boot)
 
-A backend REST API application that simulates a simplified hotel booking platform.
-The system manages customers, hotels, rooms, and bookings with proper layered architecture and enterprise-style design.
+A backend REST API application that simulates a simplified hotel booking platform.  
+The system manages customers, hotels, rooms, and bookings using proper layered architecture and enterprise-style design principles.
 
-📌 Project Overview
+---
 
-This project is a backend-only Hotel Booking / Order Management System built using Java and Spring Boot.
+## 📌 Project Overview
 
-The goal of this project is to:
+This project is a backend-only Hotel Booking / Order Management System built using **Java and Spring Boot**.
 
-Build clean and structured REST APIs
+### 🎯 Goals of the Project
 
-Understand backend architecture
-
-Apply Java & Spring Boot concepts practically
-
-Design scalable and maintainable systems
-
-Follow enterprise development practices
+- Build clean and structured REST APIs
+- Understand backend architecture
+- Apply Java & Spring Boot concepts practically
+- Design scalable and maintainable systems
+- Follow enterprise development practices
 
 The system exposes APIs to manage:
 
-Customers
+- Customers  
+- Hotels  
+- Rooms  
+- Bookings  
 
-Hotels
+---
 
-Rooms
+## 🛠️ Technology Stack
 
-Bookings
+- Java (OOP, Core Concepts)
+- Spring Boot
+- Spring Data JPA
+- MySQL (Primary Database)
+- Maven
+- Swagger (OpenAPI)
+- Postman (API Testing)
+- Git & GitHub
 
-🛠️ Technology Stack
+---
 
-Java (OOP, Core Concepts)
+## 🏗️ Architecture
 
-Spring Boot
+The project follows a proper layered architecture:
 
-Spring Data JPA
-
-MySQL (Primary Database)
-
-Maven
-
-Swagger (OpenAPI)
-
-Postman (API Testing)
-
-Git & GitHub
-
-🏗️ Architecture
-
-The project follows proper layered architecture:
+```
 
 controller  →  service  →  repository  →  database
 
-Layers:
+````
 
-Controller Layer – Handles HTTP requests and responses
+### Layers
 
-Service Layer – Business logic and validations
+- **Controller Layer** – Handles HTTP requests and responses
+- **Service Layer** – Business logic and validations
+- **Repository Layer** – Database interaction via JPA
+- **DTO Layer** – Clean API contract (Request & Response separation)
+- **Exception Layer** – Global exception handling
 
-Repository Layer – Database interaction via JPA
+---
 
-DTO Layer – Clean API contract (Request & Response separation)
+## 🗄️ Database
 
-Exception Layer – Global exception handling
+This project uses **MySQL**.
 
-🗄️ Database
+### Create Database
 
-This project uses MySQL.
-
-Create Database
+```sql
 CREATE DATABASE hotel_booking_system;
+````
 
-application.properties
+### application.properties
+
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/hotel_booking_system
 spring.datasource.username=root
 spring.datasource.password=your_password
@@ -82,187 +82,203 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+```
 
-🚀 How to Run
-Using Maven Wrapper
+---
+
+## 🚀 How to Run
+
+### Using Maven Wrapper
+
+```bash
 ./mvnw clean install
 ./mvnw spring-boot:run
-
+```
 
 Or:
 
+```bash
 ./mvnw clean package
 java -jar target/*.jar
-
+```
 
 Application runs on:
 
+```
 http://localhost:8080
+```
 
-📚 Swagger API Documentation
+---
+
+## 📚 Swagger API Documentation
 
 Swagger UI:
 
+```
 http://localhost:8080/swagger-ui.html
-
+```
 
 Use Swagger to test all APIs interactively.
 
-📦 Modules & APIs
+---
+
+# 📦 Modules & APIs
 
 All APIs are available under:
 
+```
 /api
+```
 
-👤 Customer Module
+---
 
-Create Customer
-POST /api/customers
+## 👤 Customer Module
 
-Get Customer by ID
-GET /api/customers/{id}
+* **Create Customer**
+  `POST /api/customers`
 
-Update Customer
-PUT /api/customers/{id}
+* **Get Customer by ID**
+  `GET /api/customers/{id}`
 
-🏨 Hotel Module
+* **Update Customer**
+  `PUT /api/customers/{id}`
 
-Add Hotel
-POST /api/hotels
+---
 
-List Hotels (with pagination & optional location filter)
-GET /api/hotels?page=0&size=10&location=City
+## 🏨 Hotel Module
 
-Get Hotel by ID
-GET /api/hotels/{id}
+* **Add Hotel**
+  `POST /api/hotels`
 
-🛏️ Room Module
+* **List Hotels (with pagination & optional location filter)**
+  `GET /api/hotels?page=0&size=10&location=City`
 
-Add Room to Hotel
-POST /api/hotels/{hotelId}/rooms
+* **Get Hotel by ID**
+  `GET /api/hotels/{id}`
 
-List Available Rooms (Paginated)
-GET /api/hotels/{hotelId}/rooms?page=0&size=10
+---
 
-Get Room Details
-GET /api/hotels/{hotelId}/rooms/{roomId}
+## 🛏️ Room Module
 
-📖 Booking Module
+* **Add Room to Hotel**
+  `POST /api/hotels/{hotelId}/rooms`
 
-Create Booking
-POST /api/bookings
+* **List Available Rooms (Paginated)**
+  `GET /api/hotels/{hotelId}/rooms?page=0&size=10`
 
-Get Booking by ID
-GET /api/bookings/{id}
+* **Get Room Details**
+  `GET /api/hotels/{hotelId}/rooms/{roomId}`
 
-Cancel Booking
-PUT /api/bookings/{id}/cancel
+---
 
-List Bookings by Status (Paginated)
-GET /api/bookings/status/{status}?page=0&size=10
+## 📖 Booking Module
 
-Allowed status values:
+* **Create Booking**
+  `POST /api/bookings`
 
-CONFIRMED
+* **Get Booking by ID**
+  `GET /api/bookings/{id}`
 
-CANCELLED
+* **Cancel Booking**
+  `PUT /api/bookings/{id}/cancel`
 
-✅ Key Features Implemented
+* **List Bookings by Status (Paginated)**
+  `GET /api/bookings/status/{status}?page=0&size=10`
 
-✔ Proper layered architecture
-✔ Clean Request & Response DTO separation
-✔ MySQL integration
-✔ Pagination support
-✔ Global exception handling
-✔ Custom exceptions (BusinessException, ResourceNotFoundException)
-✔ Booking availability validation
-✔ Swagger documentation
-✔ Meaningful HTTP status codes
-✔ Postman tested APIs
+### Allowed Status Values
 
-⚠️ Exception Handling
+* `CONFIRMED`
+* `CANCELLED`
+
+---
+
+## ✅ Key Features Implemented
+
+* Proper layered architecture
+* Clean Request & Response DTO separation
+* MySQL integration
+* Pagination support
+* Global exception handling
+* Custom exceptions (`BusinessException`, `ResourceNotFoundException`)
+* Booking availability validation
+* Swagger documentation
+* Meaningful HTTP status codes
+* Postman tested APIs
+
+---
+
+## ⚠️ Exception Handling
 
 The project includes:
 
-ResourceNotFoundException → 404 errors
-
-BusinessException → Invalid operations (e.g., invalid booking status)
-
-Global exception handler using @RestControllerAdvice
+* `ResourceNotFoundException` → 404 errors
+* `BusinessException` → Invalid operations (e.g., invalid booking status)
+* Global exception handler using `@RestControllerAdvice`
 
 Validation errors return proper 4xx responses.
 
-🔄 Booking Logic
+---
+
+## 🔄 Booking Logic
 
 Booking creation ensures:
 
-Customer exists
-
-Hotel exists
-
-Room exists
-
-Room belongs to selected hotel
-
-Room is available
-
-Room becomes unavailable after booking
-
-Booking status set to CONFIRMED
-
-Cancelled booking restores room availability
+* Customer exists
+* Hotel exists
+* Room exists
+* Room belongs to selected hotel
+* Room is available
+* Room becomes unavailable after booking
+* Booking status set to `CONFIRMED`
+* Cancelled booking restores room availability
 
 All handled transactionally.
 
-📈 Project Phases
-Phase 1 – Setup
+---
 
-Spring Boot setup
+## 📈 Project Phases
 
-MySQL integration
+### Phase 1 – Setup
 
-Basic CRUD
+* Spring Boot setup
+* MySQL integration
+* Basic CRUD
 
-Phase 2 – Core Functionality
+### Phase 2 – Core Functionality
 
-Customer module
+* Customer module
+* Hotel module
+* Room module
+* Booking module
+* API testing
 
-Hotel module
+### Phase 3 – Enhancements
 
-Room module
+* Pagination
+* Exception handling improvements
+* Swagger integration
+* Business validations
 
-Booking module
+---
 
-API testing
-
-Phase 3 – Enhancements
-
-Pagination
-
-Exception handling improvements
-
-Swagger integration
-
-Business validations
-
-🎯 Outcome
+## 🎯 Outcome
 
 By completing this project, you gain hands-on experience with:
 
-Building REST APIs using Spring Boot
+* Building REST APIs using Spring Boot
+* Designing scalable backend systems
+* Using JPA with relational databases
+* Handling real-world booking logic
+* Writing clean, maintainable code
+* Using Git professionally
 
-Designing scalable backend systems
+---
 
-Using JPA with relational databases
-
-Handling real-world booking logic
-
-Writing clean, maintainable code
-
-Using Git professionally
-
-🔗 Repository
+## 🔗 Repository
 
 GitHub Repository:
 
-👉 https://github.com/priyanshubirlaa/Hotel_Booking_System
+👉 [https://github.com/priyanshubirlaa/Hotel_Booking_System](https://github.com/priyanshubirlaa/Hotel_Booking_System)
+
+```
+```
