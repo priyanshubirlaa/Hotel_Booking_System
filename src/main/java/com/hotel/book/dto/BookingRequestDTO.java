@@ -7,6 +7,7 @@ public class BookingRequestDTO {
     @NotNull
     private Long customerId;
 
+    
     @NotNull
     private Long hotelId;
 
