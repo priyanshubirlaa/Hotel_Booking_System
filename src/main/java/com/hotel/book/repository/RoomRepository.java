@@ -10,6 +10,7 @@ import com.hotel.book.entity.Room;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    List<Room> findByHotelAndAvailableIsTrue(Hotel hotel);
-    Optional<Room> findByIdAndHotelId(Long id, Long hotelId);
+    List<Room> findByHotel(Hotel hotel);
+
+    Optional<Room> findByIdAndHotelId(Long roomId, Long hotelId);
 }

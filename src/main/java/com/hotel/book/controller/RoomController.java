@@ -42,7 +42,7 @@ public class RoomController {
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<RoomResponseDTO> result = roomService.getAvailableRoomsByHotel(hotelId, pageable);
+        Page<RoomResponseDTO> result = roomService.getRoomsByHotel(hotelId, pageable);
 
         return ResponseEntity.ok(result);
     }

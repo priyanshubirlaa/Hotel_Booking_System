@@ -5,7 +5,7 @@ public class RoomResponseDTO {
     private Long id;
     private String type;
     private Double price;
-    private Boolean available;
+    //private Boolean available;
 
     public RoomResponseDTO() {
     }
@@ -14,7 +14,7 @@ public class RoomResponseDTO {
         this.id = id;
         this.type = type;
         this.price = price;
-        this.available = available;
+       // this.available = available;
     }
 
     public static RoomResponseDTOBuilder builder() {
@@ -45,13 +45,13 @@ public class RoomResponseDTO {
         this.price = price;
     }
 
-    public Boolean getAvailable() {
-        return available;
-    }
+    // public Boolean getAvailable() {
+    //     return available;
+    // }
 
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
+    // public void setAvailable(Boolean available) {
+    //     this.available = available;
+    // }
 
     public static class RoomResponseDTOBuilder {
         private Long id;

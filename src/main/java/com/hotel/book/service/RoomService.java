@@ -9,10 +9,7 @@ public interface RoomService {
 
     RoomResponseDTO addRoomToHotel(Long hotelId, RoomRequestDTO request);
 
-    Page<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId, Pageable pageable);
+    Page<RoomResponseDTO> getRoomsByHotel(Long hotelId, Pageable pageable);
 
     RoomResponseDTO getRoomByHotelAndRoom(Long hotelId, Long roomId);
-
-    
 }
-

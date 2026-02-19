@@ -27,13 +27,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomResponseDTO addRoomToHotel(Long hotelId, RoomRequestDTO request) {
+
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
 
         Room room = new Room();
         room.setType(request.getType());
         room.setPrice(request.getPrice());
-        room.setAvailable(true);
         room.setHotel(hotel);
 
         Room saved = roomRepository.save(room);
@@ -41,20 +41,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Page<RoomResponseDTO> getAvailableRoomsByHotel(Long hotelId, Pageable pageable) {
+    public Page<RoomResponseDTO> getRoomsByHotel(Long hotelId, Pageable pageable) {
+
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
 
-        List<Room> availableRooms = roomRepository.findByHotelAndAvailableIsTrue(hotel);
+        List<Room> rooms = roomRepository.findByHotel(hotel);
 
         int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), availableRooms.size());
+        int end = Math.min(start + pageable.getPageSize(), rooms.size());
 
-        List<RoomResponseDTO> content = availableRooms.subList(start, end).stream()
+        List<RoomResponseDTO> content = rooms.subList(start, end)
+                .stream()
                 .map(this::mapToResponse)
                 .toList();
 
-        return new PageImpl<>(content, pageable, availableRooms.size());
+        return new PageImpl<>(content, pageable, rooms.size());
     }
 
     @Override
@@ -63,8 +65,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository
                 .findByIdAndHotelId(roomId, hotelId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "Room not found for this hotel"));
+                        new ResourceNotFoundException("Room not found for this hotel"));
 
         return mapToResponse(room);
     }
@@ -74,8 +75,6 @@ public class RoomServiceImpl implements RoomService {
                 .id(room.getId())
                 .type(room.getType())
                 .price(room.getPrice())
-                .available(room.getAvailable())
                 .build();
     }
 }
-

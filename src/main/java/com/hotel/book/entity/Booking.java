@@ -1,21 +1,15 @@
 package com.hotel.book.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings",
+       indexes = {
+           @Index(name = "idx_room_dates", columnList = "room_id, checkInDate, checkOutDate")
+       })
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,18 +21,21 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
+
+    private LocalDate checkInDate;
+
+    private LocalDate checkOutDate;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 }
-

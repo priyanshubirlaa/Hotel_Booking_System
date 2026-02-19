@@ -26,7 +26,6 @@ public class Room {
 
     private String type;
     private Double price;
-    private Boolean available;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
