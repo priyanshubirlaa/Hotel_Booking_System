@@ -10,6 +10,7 @@ import com.hotel.book.entity.BookingStatus;
 public interface BookingService {
 
     BookingResponseDTO createBooking(BookingRequestDTO request);
+    
 
     BookingResponseDTO getBookingById(Long id);
 
