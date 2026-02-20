@@ -1,10 +1,14 @@
 package com.hotel.book.service.Impl;
 
+import java.util.UUID;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hotel.book.dto.CustomerRequestDTO;
 import com.hotel.book.dto.CustomerResponseDTO;
 import com.hotel.book.entity.Customer;
+import com.hotel.book.entity.Role;
 import com.hotel.book.repository.CustomerRepository;
 import com.hotel.book.service.CustomerService;
 import com.hotel.book.exception.ResourceNotFoundException;
@@ -16,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public CustomerResponseDTO createCustomer(CustomerRequestDTO request) {

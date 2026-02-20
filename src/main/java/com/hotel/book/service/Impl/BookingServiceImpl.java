@@ -45,7 +45,7 @@ public class BookingServiceImpl implements BookingService {
         Hotel hotel = hotelRepository.findById(request.getHotelId())
                 .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
 
-        Room room = roomRepository.findById(request.getRoomId())
+        Room room = roomRepository.findByIdAndHotelId(request.getRoomId(), request.getHotelId())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
 
         List<Booking> overlapping = bookingRepository.findOverlappingBookings(
