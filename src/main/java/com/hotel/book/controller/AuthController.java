@@ -67,6 +67,7 @@ public ResponseEntity<String> register(@Validated @RequestBody UserRegisterReque
             .body("User created successfully");
 }
 
+
     @PostMapping("/login")
 public AuthResponse login(@RequestBody LoginRequest request) {
 
