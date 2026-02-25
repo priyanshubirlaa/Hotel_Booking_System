@@ -82,6 +82,12 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDTO cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                
+                try {
+                    Thread.sleep(10000); // 10 seconds delay
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
         booking.setStatus(BookingStatus.CANCELLED);
         return mapToResponse(bookingRepository.save(booking));

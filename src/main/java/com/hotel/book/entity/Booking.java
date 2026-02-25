@@ -32,6 +32,11 @@ public class Booking {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
+    @Version   // ✅ Enables optimistic locking
+    @Column(nullable = false)
+    private Long version;
+
+
     private LocalDate checkInDate;
 
     private LocalDate checkOutDate;

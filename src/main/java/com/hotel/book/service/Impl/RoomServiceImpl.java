@@ -42,21 +42,14 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Page<RoomResponseDTO> getRoomsByHotel(Long hotelId, Pageable pageable) {
-
-        Hotel hotel = hotelRepository.findById(hotelId)
-                .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
-
-        List<Room> rooms = roomRepository.findByHotel(hotel);
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), rooms.size());
-
-        List<RoomResponseDTO> content = rooms.subList(start, end)
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
-
-        return new PageImpl<>(content, pageable, rooms.size());
+    
+        if (!hotelRepository.existsById(hotelId)) {
+            throw new ResourceNotFoundException("Hotel not found");
+        }
+    
+        Page<Room> roomsPage = roomRepository.findByHotelId(hotelId, pageable);
+    
+        return roomsPage.map(this::mapToResponse);
     }
 
     @Override
