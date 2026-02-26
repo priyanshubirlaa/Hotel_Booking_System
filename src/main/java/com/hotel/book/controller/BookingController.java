@@ -3,6 +3,7 @@ package com.hotel.book.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -61,5 +62,26 @@ public class BookingController {
                     + ". Allowed values are CONFIRMED or CANCELLED.");
         }
     }
+
+    @GetMapping
+public ResponseEntity<Page<BookingResponseDTO>> searchBookings(
+        @RequestParam(required = false) BookingStatus status,
+        @RequestParam(required = false) Long customerId,
+        @RequestParam(required = false) Long hotelId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir) {
+
+    Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return ResponseEntity.ok(
+            bookingService.searchBookings(status, customerId, hotelId, pageable)
+    );
+}
 }
 

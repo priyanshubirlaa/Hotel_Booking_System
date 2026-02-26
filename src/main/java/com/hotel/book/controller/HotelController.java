@@ -3,6 +3,7 @@ package com.hotel.book.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,16 +35,21 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<HotelResponseDTO>> getHotels(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String location) {
+public ResponseEntity<Page<HotelResponseDTO>> getHotels(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir,
+        @RequestParam(required = false) String city) {
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<HotelResponseDTO> result = hotelService.getHotels(location, pageable);
+    Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
 
-        return ResponseEntity.ok(result);
-    }
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return ResponseEntity.ok(hotelService.getHotels(city, pageable));
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<HotelResponseDTO> getHotel(@PathVariable Long id) {

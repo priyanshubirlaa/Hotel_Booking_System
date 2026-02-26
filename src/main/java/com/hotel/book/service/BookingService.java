@@ -17,5 +17,12 @@ public interface BookingService {
     BookingResponseDTO cancelBooking(Long id);
 
     Page<BookingResponseDTO> getBookingsByStatus(BookingStatus status, Pageable pageable);
+
+    Page<BookingResponseDTO> searchBookings(
+        BookingStatus status,
+        Long customerId,
+        Long hotelId,
+        Pageable pageable
+);
 }
 

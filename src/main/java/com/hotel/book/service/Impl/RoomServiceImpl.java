@@ -1,5 +1,6 @@
 package com.hotel.book.service.Impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -70,4 +71,33 @@ public class RoomServiceImpl implements RoomService {
                 .price(room.getPrice())
                 .build();
     }
+
+    @Override
+public Page<RoomResponseDTO> searchRooms(
+        Long hotelId,
+        Double minPrice,
+        Double maxPrice,
+        LocalDate checkIn,
+        LocalDate checkOut,
+        Pageable pageable) {
+
+    if (!hotelRepository.existsById(hotelId)) {
+        throw new ResourceNotFoundException("Hotel not found");
+    }
+
+    Page<Room> page;
+
+    if (checkIn != null && checkOut != null) {
+        page = roomRepository.findAvailableRooms(hotelId, checkIn, checkOut, pageable);
+
+    } else if (minPrice != null && maxPrice != null) {
+        page = roomRepository.findByHotelIdAndPriceBetween(
+                hotelId, minPrice, maxPrice, pageable);
+
+    } else {
+        page = roomRepository.findByHotelId(hotelId, pageable);
+    }
+
+    return page.map(this::mapToResponse);
+}
 }

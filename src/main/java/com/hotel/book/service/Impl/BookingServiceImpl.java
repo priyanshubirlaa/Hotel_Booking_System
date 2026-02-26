@@ -82,7 +82,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDTO cancelBooking(Long id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
-                
+
                 try {
                     Thread.sleep(10000); // 10 seconds delay
                 } catch (InterruptedException e) {
@@ -106,6 +106,33 @@ public class BookingServiceImpl implements BookingService {
                 .hotelName(booking.getHotel().getName())
                 .roomType(booking.getRoom().getType())
                 .status(booking.getStatus())
+                .checkInDate(booking.getCheckInDate())
+                .checkOutDate(booking.getCheckOutDate())
                 .build();
     }
+
+    @Override
+public Page<BookingResponseDTO> searchBookings(
+        BookingStatus status,
+        Long customerId,
+        Long hotelId,
+        Pageable pageable) {
+
+    Page<Booking> page;
+
+    if (status != null) {
+        page = bookingRepository.findByStatus(status, pageable);
+
+    } else if (customerId != null) {
+        page = bookingRepository.findByCustomerId(customerId, pageable);
+
+    } else if (hotelId != null) {
+        page = bookingRepository.findByHotelId(hotelId, pageable);
+
+    } else {
+        page = bookingRepository.findAll(pageable);
+    }
+
+    return page.map(this::mapToResponse);
+}
 }

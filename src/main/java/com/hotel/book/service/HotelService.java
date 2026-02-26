@@ -12,6 +12,6 @@ public interface HotelService {
 
     HotelResponseDTO getHotelById(Long id);
 
-    Page<HotelResponseDTO> getHotels(String locationFilter, Pageable pageable);
+    Page<HotelResponseDTO> getHotels(String city, Pageable pageable);
 }
 

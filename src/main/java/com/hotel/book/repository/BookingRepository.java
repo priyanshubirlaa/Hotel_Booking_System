@@ -26,4 +26,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("checkInDate") LocalDate checkInDate,
             @Param("checkOutDate") LocalDate checkOutDate
     );
+
+    //Page<Booking> findByStatus(BookingStatus status, Pageable pageable);
+
+Page<Booking> findByCustomerId(Long customerId, Pageable pageable);
+
+Page<Booking> findByHotelId(Long hotelId, Pageable pageable);
 }

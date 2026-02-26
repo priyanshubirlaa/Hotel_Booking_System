@@ -1,5 +1,7 @@
 package com.hotel.book.dto;
 
+import java.time.LocalDate;
+
 import com.hotel.book.entity.BookingStatus;
 
 public class BookingResponseDTO {
@@ -9,17 +11,26 @@ public class BookingResponseDTO {
     private String hotelName;
     private String roomType;
     private BookingStatus status;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
 
     public BookingResponseDTO() {
     }
 
-    public BookingResponseDTO(Long bookingId, String customerName, String hotelName, String roomType,
-            BookingStatus status) {
+    public BookingResponseDTO(Long bookingId,
+                              String customerName,
+                              String hotelName,
+                              String roomType,
+                              BookingStatus status,
+                              LocalDate checkInDate,
+                              LocalDate checkOutDate) {
         this.bookingId = bookingId;
         this.customerName = customerName;
         this.hotelName = hotelName;
         this.roomType = roomType;
         this.status = status;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
     }
 
     public static BookingResponseDTOBuilder builder() {
@@ -66,12 +77,31 @@ public class BookingResponseDTO {
         this.status = status;
     }
 
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
     public static class BookingResponseDTOBuilder {
+
         private Long bookingId;
         private String customerName;
         private String hotelName;
         private String roomType;
         private BookingStatus status;
+        private LocalDate checkInDate;
+        private LocalDate checkOutDate;
 
         public BookingResponseDTOBuilder bookingId(Long bookingId) {
             this.bookingId = bookingId;
@@ -98,8 +128,26 @@ public class BookingResponseDTO {
             return this;
         }
 
+        public BookingResponseDTOBuilder checkInDate(LocalDate checkInDate) {
+            this.checkInDate = checkInDate;
+            return this;
+        }
+
+        public BookingResponseDTOBuilder checkOutDate(LocalDate checkOutDate) {
+            this.checkOutDate = checkOutDate;
+            return this;
+        }
+
         public BookingResponseDTO build() {
-            return new BookingResponseDTO(bookingId, customerName, hotelName, roomType, status);
+            return new BookingResponseDTO(
+                    bookingId,
+                    customerName,
+                    hotelName,
+                    roomType,
+                    status,
+                    checkInDate,
+                    checkOutDate
+            );
         }
     }
 }

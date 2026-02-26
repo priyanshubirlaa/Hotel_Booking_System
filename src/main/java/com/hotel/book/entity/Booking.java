@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "bookings",
        indexes = {
-           @Index(name = "idx_room_dates", columnList = "room_id, checkInDate, checkOutDate")
+        @Index(name = "idx_room_dates", columnList = "room_id, check_in_date, check_out_date")
        })
 @Getter
 @Setter
@@ -37,8 +37,10 @@ public class Booking {
     private Long version;
 
 
+    @Column(name = "check_in_date")
     private LocalDate checkInDate;
 
+    @Column(name = "check_out_date")
     private LocalDate checkOutDate;
 
     @Enumerated(EnumType.STRING)

@@ -37,17 +37,18 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Page<HotelResponseDTO> getHotels(String locationFilter, Pageable pageable) {
-        Page<Hotel> page;
+public Page<HotelResponseDTO> getHotels(String city, Pageable pageable) {
 
-        if (locationFilter != null && !locationFilter.isBlank()) {
-            page = hotelRepository.findByLocationContainingIgnoreCase(locationFilter, pageable);
-        } else {
-            page = hotelRepository.findAll(pageable);
-        }
+    Page<Hotel> page;
 
-        return page.map(this::mapToResponse);
+    if (city != null && !city.isBlank()) {
+        page = hotelRepository.findByLocationContainingIgnoreCase(city, pageable);
+    } else {
+        page = hotelRepository.findAll(pageable);
     }
+
+    return page.map(this::mapToResponse);
+}
 
     private HotelResponseDTO mapToResponse(Hotel hotel) {
         return HotelResponseDTO.builder()

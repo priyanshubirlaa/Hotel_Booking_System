@@ -1,8 +1,12 @@
 package com.hotel.book.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +39,7 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping
+    @GetMapping("/available")
     public ResponseEntity<Page<RoomResponseDTO>> getAvailableRooms(
             @PathVariable Long hotelId,
             @RequestParam(defaultValue = "0") int page,
@@ -54,6 +58,31 @@ public ResponseEntity<RoomResponseDTO> getRoom(
 
     return ResponseEntity.ok(
             roomService.getRoomByHotelAndRoom(hotelId, roomId));
+}
+
+@GetMapping
+public ResponseEntity<Page<RoomResponseDTO>> searchRooms(
+        @PathVariable Long hotelId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir,
+        @RequestParam(required = false) Double minPrice,
+        @RequestParam(required = false) Double maxPrice,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut) {
+
+    Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return ResponseEntity.ok(
+            roomService.searchRooms(
+                    hotelId, minPrice, maxPrice, checkIn, checkOut, pageable
+            )
+    );
 }
 
 }
