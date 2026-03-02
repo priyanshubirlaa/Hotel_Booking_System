@@ -66,7 +66,7 @@ public class JwtUtil {
     }
 
     // =========================
-    // Validate Token (Throw Exceptions Properly)
+    // Validate Token (Throw AuthenticationExceptions)
     // =========================
     public void validateToken(String token) {
 
@@ -78,10 +78,11 @@ public class JwtUtil {
                     .parseClaimsJws(token);
 
         } catch (ExpiredJwtException ex) {
-            throw new RuntimeException("JWT token expired", ex);
+            // Will be translated by Spring Security into a 401 via AuthenticationEntryPoint
+            throw new JwtAuthenticationException("JWT token expired", ex);
 
         } catch (JwtException | IllegalArgumentException ex) {
-            throw new RuntimeException("Invalid JWT token", ex);
+            throw new JwtAuthenticationException("Invalid JWT token", ex);
         }
     }
 

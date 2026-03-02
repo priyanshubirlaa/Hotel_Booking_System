@@ -3,6 +3,7 @@ package com.hotel.book.service.Impl;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.MDC;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ import com.hotel.book.repository.*;
 import com.hotel.book.service.BookingService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
@@ -67,6 +70,14 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(BookingStatus.CONFIRMED);
 
         Booking saved = bookingRepository.save(booking);
+
+        MDC.put("status", "201");
+        log.info("Booking created successfully: bookingId={} customerId={} hotelId={} roomId={}",
+                saved.getId(),
+                customer.getId(),
+                hotel.getId(),
+                room.getId());
+
         return mapToResponse(saved);
     }
 
@@ -90,7 +101,16 @@ public class BookingServiceImpl implements BookingService {
                 }
 
         booking.setStatus(BookingStatus.CANCELLED);
-        return mapToResponse(bookingRepository.save(booking));
+        Booking saved = bookingRepository.save(booking);
+
+        MDC.put("status", "200");
+        log.info("Booking cancelled successfully: bookingId={} customerId={} hotelId={} roomId={}",
+                saved.getId(),
+                saved.getCustomer().getId(),
+                saved.getHotel().getId(),
+                saved.getRoom().getId());
+
+        return mapToResponse(saved);
     }
 
     @Override
