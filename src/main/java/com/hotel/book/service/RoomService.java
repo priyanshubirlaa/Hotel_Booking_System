@@ -25,5 +25,12 @@ public interface RoomService {
         LocalDate checkIn,
         LocalDate checkOut,
         Pageable pageable
-);
+    );
+
+    Page<RoomResponseDTO> getDynamicPricedRooms(
+        Long hotelId,
+        LocalDate checkIn,
+        LocalDate checkOut,
+        Pageable pageable
+    );
 }

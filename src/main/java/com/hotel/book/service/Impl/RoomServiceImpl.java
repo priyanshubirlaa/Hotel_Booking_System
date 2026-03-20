@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -138,25 +137,39 @@ public void updateRoomPrice(Long roomId, Double price) {
         } else {
             page = roomRepository.findByHotelId(hotelId, pageable);
         }
+        return page.map(this::mapToResponse);
+    }
 
-        // Apply dynamic pricing only when a date range is provided
-        if (checkIn != null && checkOut != null) {
-            long totalRooms = roomRepository.countByHotelId(hotelId);
-            long bookedRooms = bookingRepository.countBookedRoomsForHotel(hotelId, checkIn, checkOut);
-            double occupancyRate = (totalRooms > 0) ? (double) bookedRooms / totalRooms : 0.0;
+    @Override
+    public Page<RoomResponseDTO> getDynamicPricedRooms(
+            Long hotelId,
+            LocalDate checkIn,
+            LocalDate checkOut,
+            Pageable pageable) {
 
-            return page.map(room -> {
-                double adjustedPrice = pricingService.applyDynamicPricing(
-                        room.getPrice(), occupancyRate);
-                return RoomResponseDTO.builder()
-                        .id(room.getId())
-                        .type(room.getType().getDisplayName())
-                        .price(adjustedPrice)
-                        .build();
-            });
+        if (!hotelRepository.existsById(hotelId)) {
+            throw new ResourceNotFoundException("Hotel not found");
         }
 
-        // No date range: return base price
-        return page.map(this::mapToResponse);
+        if (checkIn == null || checkOut == null) {
+            throw new com.hotel.book.exception.BusinessException(
+                    "checkIn and checkOut are required for dynamic pricing");
+        }
+
+        Page<Room> page = roomRepository.findAvailableRooms(hotelId, checkIn, checkOut, pageable);
+
+        long totalRooms = roomRepository.countByHotelId(hotelId);
+        long bookedRooms = bookingRepository.countBookedRoomsForHotel(hotelId, checkIn, checkOut);
+        double occupancyRate = (totalRooms > 0) ? (double) bookedRooms / totalRooms : 0.0;
+
+        return page.map(room -> {
+            double adjustedPrice = pricingService.applyDynamicPricing(
+                    room.getPrice(), occupancyRate);
+            return RoomResponseDTO.builder()
+                    .id(room.getId())
+                    .type(room.getType().getDisplayName())
+                    .price(adjustedPrice)
+                    .build();
+        });
     }
 }

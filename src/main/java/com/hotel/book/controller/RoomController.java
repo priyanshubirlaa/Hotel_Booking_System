@@ -87,6 +87,29 @@ public ResponseEntity<Page<RoomResponseDTO>> searchRooms(
     );
 }
 
+@GetMapping("/dynamic-pricing")
+public ResponseEntity<Page<RoomResponseDTO>> getDynamicPricedRooms(
+        @PathVariable Long hotelId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDir,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut) {
+
+    Sort sort = sortDir.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return ResponseEntity.ok(
+            roomService.getDynamicPricedRooms(
+                    hotelId, checkIn, checkOut, pageable
+            )
+    );
+}
+
 
 @PatchMapping("/{roomId}/price")
 public ResponseEntity<String> updateRoomPrice(
@@ -99,4 +122,3 @@ public ResponseEntity<String> updateRoomPrice(
 }
 
 }
-
